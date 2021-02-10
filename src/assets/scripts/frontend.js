@@ -26,19 +26,39 @@ function searchImages() {
     const searchBox = document.getElementById('search-box');
 
     searchBox.addEventListener('keyup', function () {
-        const regex = new RegExp(this.value.toLowerCase(), 'gi');
         if (this.value.length > 0) {
-            const thumbs = document.querySelectorAll('li.list-group-item img');
-            for (let index = 0; index < thumbs.length; index++) {
-                const fileUrl = url.pathToFileURL(thumbs[index].src);
-                const fileName = path.basename(fileUrl.pathname);
-                console.log(fileName);
-                if (fileName.match(regex)) {
-                    thumbs[index].parentNode.classList.remove('hidden');
-                }else{
-                    thumbs[index].parentNode.classList.remove('hidden');
+            const regex = new RegExp(this.value.toLowerCase(), 'gi');
+            if (this.value.length > 0) {
+                const thumbs = document.querySelectorAll('li.list-group-item img');
+                for (let index = 0; index < thumbs.length; index++) {
+                    const fileUrl = url.pathToFileURL(thumbs[index].src);
+                    const fileName = path.basename(fileUrl.pathname);
+                    console.log(fileName);
+                    if (fileName.match(regex)) {
+                        thumbs[index].parentNode.classList.remove('hidden');
+                    } else {
+                        thumbs[index].parentNode.classList.remove('hidden');
+                    }
                 }
+
+                selectFirstImage();
             }
+        } else {
+            showAll();
         }
     });
+}
+
+function selectFirstImage() {
+    const image = document.querySelector('li.list-group-item:not(.hidden)');
+    changeImage(image);
+}
+
+function showAll() {
+    const listItems = document.querySelectorAll('.li.list-group-item');
+
+    for (let index = 0; index < listItems.length; index++) {
+        listItem[index].classList.remove('hidden');
+    }
+    selectFirstImage();
 }
