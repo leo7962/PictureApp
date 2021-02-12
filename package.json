@@ -16,6 +16,7 @@
     "electron-compile": "^6.4.4",
     "electron-debug": "^3.2.0",
     "filesize": "^6.1.0",
+    "fs-extra": "^9.1.0",
     "is-image": "^3.0.0",
     "photonkit": "^0.1.2"
   },
