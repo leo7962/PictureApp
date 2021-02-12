@@ -16,7 +16,7 @@ function saveImage(fileName, callback) {
         fileSrc = fileSrc.replace(/^data:([A-Za-z-+/]+);base64,/, '');
         fs.writeFile(fileName, fileSrc, 'base64', callback);
     } else {
-        fileSrc = fileSrc.replace('plp://', '');
+        fileSrc = fileSrc.replace('file://', '');
         fs.copy(fileSrc, fileName, callback);
     }
 }

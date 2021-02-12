@@ -1,5 +1,5 @@
-import { setIpc, openDirectory, SaveFile } from './ipcRendererEvents';
-import { GetImagesEvent, searchImages, selectFilter } from './imagesUi';
+import { setIpc, openDirectory, SaveFile, openPreferences } from './mainWindow/ipcRendererEvents';
+import { GetImagesEvent, searchImages, selectFilter } from './mainWindow/imagesUi';
 
 window.addEventListener('load', () => {
     setIpc();
@@ -7,6 +7,7 @@ window.addEventListener('load', () => {
     searchImages();
     selectFilter();
     OpenFolder('open-directory', openDirectory);
+    OpenFolder('open-preferences', openPreferences);
     OpenFolder('save-button', SaveFile);
 });
 
