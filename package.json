@@ -2,12 +2,17 @@
   "name": "pictureapp",
   "version": "1.0.0",
   "description": "Este es un aplicativo desarrollado en Electron para la visualización de imagenes",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "dev": "cross-env NODE_ENV=development electron src/index.js",
     "lint": "standard",
     "lint-fix": "standard --fix",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron-forge start",
+    "package-linux": "electron-forge package --platform=linux --arch=x64",
+    "package-mac": "electron-forge package --arch=x64",
+    "package-win": "electron-forge package",
+    "make": "electron-forge make"
   },
   "author": "Leonardo Fabián Hernández Peña",
   "license": "GPL-3.0",
@@ -18,14 +23,52 @@
     "electron-compile": "^6.4.4",
     "electron-debug": "^3.2.0",
     "electron-settings": "^4.0.2",
+    "electron-squirrel-startup": "^1.0.0",
     "filesize": "^6.1.0",
     "fs-extra": "^9.1.0",
     "is-image": "^3.0.0",
     "photonkit": "^0.1.2"
   },
   "devDependencies": {
+    "babel-plugin-transform-async-to-generator": "^6.24.1",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-react": "^6.24.1",
     "devtron": "^1.4.0",
-    "electron-prebuilt-compile": "^8.2.0",
+    "electron-forge": "^5.2.4",
+    "electron-prebuilt-compile": "8.2.0",
     "standart": "^6.1.0"
+  },
+  "config": {
+    "forge": {
+      "make_targets": {
+        "win32": [
+          "squirrel"
+        ],
+        "darwin": [
+          "zip",
+          "dmg"
+        ],
+        "linux": [
+          "deb",
+          "rpm"
+        ]
+      },
+      "electronPackagerConfig": {
+        "asar": true
+      },
+      "electronWinstallerConfig": {
+        "name": "pictureapp"
+      },
+      "electronInstallerDebian": {},
+      "electronInstallerRedhat": {},
+      "github_repository": {
+        "owner": "",
+        "name": ""
+      },
+      "windowsStoreConfig": {
+        "packageName": "",
+        "name": "pictureapp"
+      }
+    }
   }
 }

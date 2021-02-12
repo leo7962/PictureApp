@@ -1,22 +1,21 @@
 import { remote, ipcRenderer } from 'electron';
 import settings from 'electron-settings';
-import CryptoJS from 'crypto-js';
+import crypto from 'crypto';
 
 window.addEventListener('load', () => {
     CancelButton();
     SaveButton();
 
     if (settings.has('cloudup.user')) {
-        document.getElementById('cloudup-user').value = settings.get('cloudup.user');
+        document.getElementById('cloudup-user').value = settings.get('cloudup.user')
     }
 
     if (settings.has('cloudup.passwd')) {
-        const decipher = CryptoJS.AES.decrypt(
-            settings.getSync("cloudup.passw"), "PictureApp");
+        const decipher = crypto.createDecipher('aes192', 'PictureApp');
+        let decrypted = decipher.update(settings.get('cloudup.passwd'), 'hex', 'utf8');
+        decrypted += decipher.final('utf8')
 
-        let decrypted = decipher.toString(CryptoJS.enc.utf8);
-
-        document.getElementById('cloudup-user').value = decrypted;
+        document.getElementById('cloudup-passwd').value = decrypted
     }
 })
 
@@ -34,18 +33,16 @@ function SaveButton() {
 
     saveButton.addEventListener('click', () => {
         if (prefsForm.reportValidity()) {
-            const encrypted = CryptoJS.AES.encrypt(
-                document.getElementById('cloudup-passwd').value,
-                "PictureApp"
-            ).toString();
-            settings.set('cloudup', {
-                user: document.getElementById('cloudup-user').Value,
-                passwd: encrypted
-            });
+            const cipher = crypto.createCipher('aes192', 'PictureApp');
+            let encrypted = cipher.update(document.getElementById('cloudup-passwd').value);
+            encrypted += cipher.final('hex');
+
+            settings.set('cloudup.user', document.getElementById('cloudup-user').value);
+            settings.set('cloudup.passwd', encrypted);
             const prefsWindow = remote.getCurrentWindow();
             prefsWindow.close();
         } else {
-            ipcRenderer.send('show-dialog', { type: 'error', title: 'PictureApp', message: 'Please complate the fields' });
+            ipcRenderer.send('show-dialog', { type: 'error', title: 'Platzipics', message: 'Please complate the fields' })
         }
     });
 }

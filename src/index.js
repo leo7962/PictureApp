@@ -1,12 +1,13 @@
 'use strict';
 
 // Instanciando los objetos app y BrowserWindow
-import { app, BrowserWindow, Tray, nativeImage } from 'electron';
+import { app, BrowserWindow, Tray, nativeImage, globalShortcut, protocol } from 'electron';
 import devtools from './devtools';
 import handleerror from './handleerror';
 import MainIpc from './ipcMainFunctions';
 import os from 'os';
 import path from 'path';
+import { request } from 'http';
 
 global.win;
 global.tray;
@@ -19,21 +20,36 @@ if (process.env.NODE_ENV === 'development') {
 
 // Imprimiendo un mensaje en la consola antes de salir
 app.on('before-quit', () => {
-    console.log('Saliendo del aplicativo...');
+    globalShortcut.unregisterAll();
 });
 
 // Ejecuntando ordenes cuando la aplicación está lista
 app.on('ready', () => {
+    protocol.registerFileProtocol('pap', (request, callback) => {
+        const url = request.url.substr(6);
+        callback({ path: path.normalize(`${url}`) });
+    }, (error) => {
+        if (error) {
+            console.error('Failed to refister protocol');
+        }
+    });
+
     // Creando una ventana
     global.win = new BrowserWindow({
         width: 800,
         height: 600,
-        title: 'Bienvenido Leo',
+        title: 'BPictureApp',
         center: true,
         maximizable: false,
+        icon: path.join(__dirname, 'assets', 'icons', 'main-icon.ico'),
         webPreferences: {
             nodeIntegration: true,
         }
+    });
+
+    globalShortcut.register('CommandOrControl+Alt+p', () => {
+        global.win.show();
+        global.win.focus();
     });
 
     MainIpc(global.win);

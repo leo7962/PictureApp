@@ -24,7 +24,7 @@ async function setIpc() {
         console.log(file);
         saveImage(file, (err) => {
             if (err) {
-                return showDialog('error', 'PictureApp', err.message);                
+                return showDialog('error', 'PictureApp', err.message);
             } else {
                 document.getElementById('image-displayed').dataset.filtered = file;
                 return showDialog('info', 'PictureApp', 'Image success saved')
@@ -58,7 +58,7 @@ function openPreferences() {
         preferencesWindow.focus();
     });
     preferencesWindow.show();
-    preferencesWindow.loadURL(`file://${path.join(__dirname, '..')}/preferences.html`);
+    preferencesWindow.loadURL(`pap://${path.join(__dirname, '..')}/preferences.html`);
 }
 
 function openDirectory() {
@@ -86,7 +86,7 @@ function uploadImage() {
         image = imageNode.src;
     }
 
-    image = image.replace('file://', '');
+    image = image.replace('pap://', '');
     let fileName = path.basename(image);
     if (settings.has('cloudup.user') && settings.has('cloudup.passwd')) {
 
@@ -110,9 +110,9 @@ function uploadImage() {
                 showDialog('error', 'PictureApp', "Error, your credentials doesn't exists");
             } else {
                 clipboard.writeText(stream.url);
-                const notify = new Notification('PictureApp', { //eslint-disable-line
-                    body: `Imagen cargada con éxito - ${stream.url}, el enlace se copio al portapeles ` +
-                        `De click para abrir la url`,
+                const notify = new Notification('PictureApp', {
+                    body: `Image uploaded success - ${stream.url}, the url is copied to the clipboard ` +
+                        `Click to open the url`,
                     silent: false
                 });
 
@@ -120,24 +120,24 @@ function uploadImage() {
                     shell.openExternal(stream.url);
                 }
             }
-        })
+        });
 
     } else {
         showDialog('error', 'PictureApp', 'Please, complate the preferences for CloudUp');
     }
 }
 
-function pasteImage () {
-    const image = clipboard.readImage()
-    const data = image.toDataURL()
+function pasteImage() {
+    const image = clipboard.readImage();
+    const data = image.toDataURL();
     if (data.indexOf('data:image/png;base64') !== -1 && !image.isEmpty()) {
-      let mainImage = document.getElementById('image-displayed')
-      mainImage.src = data
-      mainImage.dataset.original = data
+        let mainImage = document.getElementById('image-displayed')
+        mainImage.src = data
+        mainImage.dataset.original = data
     } else {
-      showDialog('error', 'Platzipics', 'No hay una imagen valida en el portapapeles')
+        showDialog('error', 'PictureApp', 'No image value to the clipboard')
     }
-  }
+}
 
 module.exports = {
     setIpc: setIpc,

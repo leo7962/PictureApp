@@ -1,7 +1,9 @@
-import { setIpc, openDirectory, SaveFile, openPreferences, uploadImage } from './mainWindow/ipcRendererEvents';
+import { setIpc, openDirectory, SaveFile, openPreferences, uploadImage, pasteImage } from './mainWindow/ipcRendererEvents';
 import { GetImagesEvent, searchImages, selectFilter, Print } from './mainWindow/imagesUi';
+import createMenu from './mainWindow/menu';
 
 window.addEventListener('load', () => {
+    createMenu();
     setIpc();
     GetImagesEvent();
     searchImages();
@@ -11,6 +13,7 @@ window.addEventListener('load', () => {
     OpenFolder('save-button', SaveFile);
     OpenFolder('print', Print);
     OpenFolder('upload', uploadImage);
+    OpenFolder('paste', pasteImage);
 });
 
 function OpenFolder(id, func) {
