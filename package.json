@@ -12,7 +12,9 @@
   "author": "Leonardo Fabián Hernández Peña",
   "license": "GPL-3.0",
   "dependencies": {
+    "cloudup-client": "^0.3.2",
     "cross-env": "^7.0.3",
+    "crypto-js": "^4.0.0",
     "electron-compile": "^6.4.4",
     "electron-debug": "^3.2.0",
     "electron-settings": "^4.0.2",
