@@ -51,8 +51,8 @@ function searchImages() {
             const thumbs = document.querySelectorAll('li.list-group-item img');
             for (let index = 0; index < thumbs.length; index++) {
                 const fileUrl = url.pathToFileURL(thumbs[index].src);
-                const fileName = path.basename(fileUrl.pathname);
-                if (fileName.match(regex)) {
+                const filename = path.basename(fileUrl.pathname);
+                if (filename.match(regex)) {
                     thumbs[index].parentNode.classList.remove('hidden');
                 } else {
                     thumbs[index].parentNode.classList.add('hidden');
@@ -89,13 +89,17 @@ function LoadImages(images) {
         const node = `<li class="list-group-item">
                     <img class="img-circle media-object pull-left" src="${images[i].src}" width="32" height="32">
                         <div class="media-body">
-                            <strong>${images[i].fileName}</strong>
+                            <strong>${images[i].filename}</strong>
                                 <p>${images[i].size}</p>
                         </div>
                     </li>`;
         imagesList.insertAdjacentHTML('beforeend', node);
 
     }
+}
+
+function Print(){
+    window.print();
 }
 
 module.exports = {
@@ -105,5 +109,6 @@ module.exports = {
     selectFilter: selectFilter,
     searchImages: searchImages,
     DeleteImages: DeleteImages,
-    LoadImages: LoadImages
+    LoadImages: LoadImages,
+    Print: Print,
 }

@@ -13,6 +13,7 @@
 </head>
 
 <body>
+    <div id="overlay" class="hidden"></div>
     <div class="window">
         <div class="window-content">
             <div class="pane-group">
@@ -20,31 +21,7 @@
                     <ul class="list-group">
                         <li class="list-group-header">
                             <input id="search-box" class="form-control" type="text" placeholder="Search for picture">
-                        </li>
-                        <li class="list-group-item selected">
-                            <img class="img-circle media-object pull-left" src="../assets/images/products/1.png"
-                                width="32" height="32">
-                            <div class="media-body">
-                                <strong>angularBoot</strong>
-                                <p>2MB</p>
-                            </div>
-                        </li>
-                        <li class="list-group-item">
-                            <img class="img-circle media-object pull-left" src="../assets/images/products/2.png"
-                                width="32" height="32">
-                            <div class="media-body">
-                                <strong>glove</strong>
-                                <p>2MB</p>
-                            </div>
-                        </li>
-                        <li class="list-group-item">
-                            <img class="img-circle media-object pull-left" src="../assets/images/products/3.png"
-                                width="32" height="32">
-                            <div class="media-body">
-                                <strong>hat</strong>
-                                <p>2MB</p>
-                            </div>
-                        </li>
+                        </li>                                                
                     </ul>
                 </div>
                 <div class="pane">
@@ -60,6 +37,12 @@
                                 <div class="btn-group">
                                     <button id="open-preferences" class="btn btn-default">
                                         <span class="icon icon-cog"></span>                                        
+                                    </button>
+                                    <button id="print" class="btn btn-default">
+                                        <span class="icon icon-print"></span>                                        
+                                    </button>
+                                    <button id="upload" class="btn btn-default">
+                                        <span class="icon icon-upload-cloud"></span>                                        
                                     </button>
                                 </div>
                                 <button id="save-button" class="btn btn-primary pull-right">
@@ -113,13 +96,13 @@
                             </div>
                         </header>
                         <div class="image-container">
-                            <img id="image-displayed" src="../assets/images/products/1.png" data-original='../assets/images/products/1.png' alt="">
+                            <img id="image-displayed" src="" data-original="" alt="">
                         </div>
                     </div>
                 </div>
             </div>
             <footer class="toolbar toolbar-footer">
-                <h1 class="title">Footer</h1>
+                <h1 id="directory" class="title"></h1>
             </footer>
         </div>
 </body>

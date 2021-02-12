@@ -11,48 +11,23 @@ function MainIpc(win) {
             title: 'Select the new location',
             buttonLabel: 'Open location',
             properties: ['openDirectory']
-        }).then(result => {
+        }).then(dir => {
             // Verifica si usuario cancelo la operación
-            if (result.canceled) {
+            if (dir.canceled) {
                 return;
             }
 
-            // Obtiene la ruta de la carpeta seleccionada
-            const filesPath = result.filePaths[0];
+            if (dir) {
+                loadImages(event, dir[0])
+            }
 
-            // Solo muestra el primer directorio
-            fs.readdir(filesPath, (error, files) => {
-                // Declara arreglo vacio de imagenes
-                let images = [];
-
-                // Verifica el error
-                if (error) {
-                    console.log(error);
-                    return;
-                }
-
-                // Recorre archivos uno a uno
-                for (let i = 0; i < files.length; i++) {
-                    // Verifica si es una imagen
-                    if (isImage(files[i])) {
-                        // Obtiene información de imagen
-                        let imageFile = path.join(filesPath, files[i]);
-                        let imageStats = fs.statSync(imageFile);
-                        let imageSize = filesize(imageStats.size, { round: 0 });
-
-                        // Agrega información de imagen al arreglo
-                        images.push({ fileName: files[i], src: `file://${imageFile}`, size: imageSize });
-                    }
-                }
-
-                event.sender.send('load-images', images);
-
-                // Muestra imagenes
-                console.log(images);
-            });
         }).catch(err => {
             console.log(err);
         });
+    });
+
+    ipcMain.on('load-directory', (event, dir) => {
+        loadImages(event, dir);
     });
 
 
@@ -75,6 +50,29 @@ function MainIpc(win) {
             title: info.title,
             message: info.message
         });
+    });
+}
+
+function loadImages(event, dir) {
+
+    const images = []
+
+    fs.readdir(dir, (err, files) => {
+        if (err) throw err
+
+        for (var i = 0; i < files.length; i++) {
+            if (isImage(files[i])) {
+                let imageFile = path.join(dir, files[i])
+                let stats = fs.statSync(imageFile)
+                let size = filesize(stats.size, { round: 0 })
+                images.push({ filename: files[i], src: `file://${imageFile}`, size: size })
+            }
+        }
+
+        event.sender.send('load-images', dir, images)
+
+        // Muestra imagenes
+        console.log(images);
     });
 }
 

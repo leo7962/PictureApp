@@ -9,15 +9,15 @@ function applyFilter(filter, currentImage) {
         .renderHtml(currentImage);
 }
 
-function saveImage(fileName, callback) {
+function saveImage(filename, callback) {
     let fileSrc = document.getElementById('image-displayed').src;
 
     if (fileSrc.indexOf(';base64,') !== -1) {
         fileSrc = fileSrc.replace(/^data:([A-Za-z-+/]+);base64,/, '');
-        fs.writeFile(fileName, fileSrc, 'base64', callback);
+        fs.writeFile(filename, fileSrc, 'base64', callback);
     } else {
         fileSrc = fileSrc.replace('file://', '');
-        fs.copy(fileSrc, fileName, callback);
+        fs.copy(fileSrc, filename, callback);
     }
 }
 
